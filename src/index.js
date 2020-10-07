@@ -1,14 +1,17 @@
-const express = require('express')
-const app = express()
+const app=require('./app')
+const port = process.env.PORT || 3000
 
-// const port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log('server running at port ' + port)
+})
 
-const port = process.env.PORT
+// const express = require('express')
+// const app = express()
+// const port = process.env.PORT
+// require('./db/mongoose')
 
-require('./db/mongoose')
-
-const userRouter = require('./routers/user')
-const taskRouter = require('./routers/task')
+// const userRouter = require('./routers/user')
+// const taskRouter = require('./routers/task')
 
 // middleware new req-> do something->run route handlers
 // app.use((req,res,next)=>{
@@ -25,79 +28,70 @@ const taskRouter = require('./routers/task')
 //     // next()
 //     res.status(503).send('Server Maintainence')
 // })
-const multer = require('multer')
-const upload = multer({
-    dest:'images',
-    limits:{
-        fileSize:1000000
-    },
-    fileFilter(req,file,cb){
-        // if(!file.originalname.endsWith('.pdf')){
-            if(!file.originalname.match(/\.(doc|docx)$/)){
-            return cb(new Error('Please upload a Word document'))
-        } 
-        cb(undefined,true)
-        // cb(new Error('File must be a PDF'))
-        // cb(undefined,true)
-        // cb(undefined,false)
-    }
-})
+// const multer = require('multer')
+// const upload = multer({
+//     dest:'images',
+//     limits:{
+//         fileSize:1000000
+//     },
+//     fileFilter(req,file,cb){
+//         // if(!file.originalname.endsWith('.pdf')){
+//             if(!file.originalname.match(/\.(doc|docx)$/)){
+//             return cb(new Error('Please upload a Word document'))
+//         } 
+//         cb(undefined,true)
+//         // cb(new Error('File must be a PDF'))
+//         // cb(undefined,true)
+//         // cb(undefined,false)
+//     }
+// })
 
 // const errorMiddleware = (req,res,next) => {
 //     throw new Error('from my middleware')
 // }
 
-app.post('/upload', upload.single('upload'),(req,res)=>{
-    res.send()
-},(error,req,res,next)=>{
-    res.status(400).send({error:error.message})
-})
+// app.post('/upload', upload.single('upload'),(req,res)=>{
+//     res.send()
+// },(error,req,res,next)=>{
+//     res.status(400).send({error:error.message})
+// })
 
-app.use(express.json()) // first express json and then routes otherwise req will be null
-app.use(userRouter)
-app.use(taskRouter)
+// app.use(express.json()) // first express json and then routes otherwise req will be null
+// app.use(userRouter)
+// app.use(taskRouter)
 
+// const jwt = require('jsonwebtoken')
 
-app.listen(port, () => {
-    console.log('server running at port ' + port)
-})
-
-
-
-
-const jwt = require('jsonwebtoken')
-
-const jwtFn = async () => {
-    const token = jwt.sign({ _id: 'abc123' }, 'thisisnew', { expiresIn: '7 days' }) // signature
-    console.log('jsonwebtoken--->', token)
-    const data = jwt.verify(token, 'thisisnew')
-    console.log('verify jwt--->', data)
-}
-jwtFn()
+// const jwtFn = async () => {
+//     const token = jwt.sign({ _id: 'abc123' }, 'thisisnew', { expiresIn: '7 days' }) // signature
+//     console.log('jsonwebtoken--->', token)
+//     const data = jwt.verify(token, 'thisisnew')
+//     console.log('verify jwt--->', data)
+// }
+// jwtFn()
 
 
-const brcypt = require('bcryptjs')
-const myFunction = async () => {
-    const password = 'Blue777'
-    const hashedPassword = await brcypt.hash(password, 8) //Hash Algorithms
-    console.log('bcrypt--->', hashedPassword)
-    const isMatch = await brcypt.compare('Blue777', hashedPassword)
-    console.log(isMatch)
-}
+// const brcypt = require('bcryptjs')
+// const myFunction = async () => {
+//     const password = 'Blue777'
+//     const hashedPassword = await brcypt.hash(password, 8) //Hash Algorithms
+//     console.log('bcrypt--->', hashedPassword)
+//     const isMatch = await brcypt.compare('Blue777', hashedPassword)
+//     console.log(isMatch)
+// }
 
-myFunction()
+// myFunction()
 
+// const pet = {
+//     name : "Hal"
+// }
+// //override toJSON!!
+// pet.toJSON = function(){
+//     console.log(this)
+//     return {}
+// }
 
-const pet = {
-    name : "Hal"
-}
-//override toJSON!!
-pet.toJSON = function(){
-    console.log(this)
-    return {}
-}
-
-console.log('pet json',JSON.stringify(pet))
+// console.log('pet json',JSON.stringify(pet))
 
 // const Task = require('./models/task')
 // const User = require('./models/users')
